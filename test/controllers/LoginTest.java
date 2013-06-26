@@ -45,4 +45,37 @@ public class LoginTest extends WithApplication {
 		assertEquals(303, status(result));
 		assertEquals("guillaume@sample.com", session(result).get("email"));
 	}
+	
+	@Test
+	public void authenticateFailure() {
+	    Result result = callAction(
+	        controllers.routes.ref.Application.authenticate(),
+	        fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
+	            "email", "guillaume@sample.com",
+	            "password", "badpassword"))
+	    );
+	    assertEquals(400, status(result));
+	    assertNull(session(result).get("email"));
+	}	
+	
+	@Test
+	public void authenticated() {
+		Result result = callAction(
+				controllers.routes.ref.Application.index(),
+				fakeRequest().withSession("email", "guillaume@sample.com")
+			);
+		// Http.Status.OK = 200
+		assertEquals(Http.Status.OK, status(result));
+	}
+	
+	@Test
+	public void notAuthenticated() {
+	    Result result = callAction(
+	        controllers.routes.ref.Application.index(),
+	        fakeRequest()
+	    );
+	    // Http.Status.SEE_OTHER = 303
+	    assertEquals(303, status(result));
+	    assertEquals("/login", header("Location", result));
+	}	
 }

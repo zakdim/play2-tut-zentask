@@ -25,10 +25,12 @@ public class Application extends Controller {
 		}		
 	}
 	
+	@Security.Authenticated(Secured.class)
     public static Result index() {
         return ok(index.render(
-        		Project.find.all(),
-        		Task.find.all()
+        		Project.findInvolving(request().username()),
+        		Task.findTodoInvolving(request().username()),
+        		User.find.byId(request().username())
         		));
     }
   
@@ -47,5 +49,11 @@ public class Application extends Controller {
     		// 303 SEE_OTHER 
     		return redirect(routes.Application.index());
     	}
+    }
+    
+    public static Result logout() {
+    	session().clear();
+    	flash("success", "You've been logged out");
+    	return redirect(routes.Application.login());
     }
 }
