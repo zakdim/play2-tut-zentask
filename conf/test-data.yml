@@ -27,7 +27,7 @@ users:
 projects:
 
     - !!models.Project
-        id: 1
+#        id: 1
         name: Play 2.0
         folder: Play framework
         members:
@@ -41,7 +41,7 @@ projects:
                 email: erwan@sample.com
 
     - !!models.Project
-        id: 2
+#        id: 2
         name: Play 1.2.4
         folder: Play framework
         members:
@@ -51,7 +51,7 @@ projects:
                 email: erwan@sample.com
                 
     - !!models.Project
-        id: 3
+#        id: 3
         name: Website
         folder: Play framework
         members:
@@ -61,7 +61,7 @@ projects:
                 email: maxime@sample.com
 
     - !!models.Project
-        id: 4
+#        id: 4
         name: Secret project
         folder: Zenexity
         members:
@@ -75,7 +75,7 @@ projects:
                 email: erwan@sample.com
                 
     - !!models.Project
-        id: 5
+#        id: 5
         name: Playmate
         folder: Zenexity
         members:
@@ -83,7 +83,7 @@ projects:
                 email: maxime@sample.com
             
     - !!models.Project
-        id: 6
+#        id: 6
         name: Things to do
         folder: Personal
         members:
@@ -91,7 +91,7 @@ projects:
                 email: guillaume@sample.com
 
     - !!models.Project
-        id: 7
+#        id: 7
         name: Play samples
         folder: Zenexity
         members:
@@ -101,7 +101,7 @@ projects:
                 email: maxime@sample.com
                 
     - !!models.Project
-        id: 8
+#        id: 8
         name: Private
         folder: Personal
         members:
@@ -109,7 +109,7 @@ projects:
                 email: guillaume@sample.com
 
     - !!models.Project
-        id: 9
+#        id: 9
         name: Private
         folder: Personal
         members:
@@ -117,7 +117,7 @@ projects:
                 email: erwan@sample.com
                 
     - !!models.Project
-        id: 10
+#        id: 10
         name: Private
         folder: Personal
         members:
@@ -125,7 +125,7 @@ projects:
                 email: sadek@sample.com
                 
     - !!models.Project
-        id: 11
+#        id: 11
         name: Private
         folder: Personal
         members:

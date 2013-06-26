@@ -20,7 +20,6 @@ import static play.test.Helpers.*;
 
 /**
  * <p>Created on 2013-05-24 at 3:49:07 PM.</p>
- * @author 1615871 (<a href="mailto:dmitri_zakharov@ftn.fedex.com">Dmitri Zakharov</a>)
  *
  */
 public class ModelsTest extends WithApplication {

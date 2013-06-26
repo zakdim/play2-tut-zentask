@@ -20,7 +20,6 @@ import com.google.common.collect.ImmutableMap;
 
 /**
  * <p>Created on 2013-06-26 at 10:32:58 AM.</p>
- * @author 1615871 (<a href="mailto:dmitri_zakharov@ftn.fedex.com">Dmitri Zakharov</a>)
  *
  */
 public class LoginTest extends WithApplication {

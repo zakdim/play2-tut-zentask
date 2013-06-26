@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -14,13 +15,12 @@ import play.db.ebean.Model;
 
 /**
  * <p>Created on 2013-05-27 at 2:19:03 PM.</p>
- * @author 1615871 (<a href="mailto:dmitri_zakharov@ftn.fedex.com">Dmitri Zakharov</a>)
  *
  */
 @Entity
 public class Task extends Model {
 
-    @Id
+    @Id 
     public Long id;
     public String title;
     public boolean done = false;

@@ -3,6 +3,7 @@
  */
 package controllers;
 
+import models.Project;
 import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -12,8 +13,6 @@ import play.mvc.Security;
  * Created on 2013-06-26 at 1:38:53 PM.
  * </p>
  * 
- * @author 1615871 (<a href="mailto:dmitri_zakharov@ftn.fedex.com">Dmitri
- *         Zakharov</a>)
  * 
  */
 public class Secured extends Security.Authenticator {
@@ -26,5 +25,12 @@ public class Secured extends Security.Authenticator {
 	@Override
 	public Result onUnauthorized(Context ctx) {
 		return redirect(routes.Application.login());
+	}
+	
+	public static boolean isMemberOf(Long project) {
+		return Project.isMember(
+				project, 
+				Context.current().request().username()
+			);
 	}
 }

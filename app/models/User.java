@@ -10,7 +10,6 @@ import play.db.ebean.Model;
 
 /**
  * <p>Created on 2013-05-24 at 1:49:24 PM.</p>
- * @author 1615871 (<a href="mailto:dmitri_zakharov@ftn.fedex.com">Dmitri Zakharov</a>)
  *
  */
 @Entity
