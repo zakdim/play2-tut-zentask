@@ -39,10 +39,12 @@ public class Application extends Controller {
     public static Result authenticate() {
     	Form<Login> loginForm = form(Login.class).bindFromRequest();
     	if (loginForm.hasErrors()) {
+    		// 400 BAD_REQUEST 
     		return badRequest(login.render(loginForm));
     	} else {
     		session().clear();
     		session("email", loginForm.get().email);
+    		// 303 SEE_OTHER 
     		return redirect(routes.Application.index());
     	}
     }

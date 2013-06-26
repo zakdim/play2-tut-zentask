@@ -39,10 +39,10 @@ public class LoginTest extends WithApplication {
 		Result result = callAction(
 				controllers.routes.ref.Application.authenticate(), 
 				fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
-						"email", "bob@example.com",
+						"email", "guillaume@sample.com",
 						"password", "secret"))
 		);
-		assertEquals(302, status(result));
-		assertEquals("bob@example.com", session(result).get("email"));
+		assertEquals(303, status(result));
+		assertEquals("guillaume@sample.com", session(result).get("email"));
 	}
 }
