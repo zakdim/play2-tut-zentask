@@ -1,35 +1,32 @@
-/**
- * Global.java
- */
-
+package util;
 import java.util.List;
 import java.util.Map;
 
+import play.libs.Yaml;
 import models.User;
 
 import com.avaje.ebean.Ebean;
 
-import play.Application;
-import play.GlobalSettings;
-import play.libs.Yaml;
+/**
+ * TestHelper.java
+ */
 
 /**
- * <p>Created on 2013-05-27 at 4:55:43 PM.</p>
+ * <p>Created on 2013-06-27 at 11:28:16 AM.</p>
+ * @author 1615871 (<a href="mailto:dmitri_zakharov@ftn.fedex.com">Dmitri Zakharov</a>)
  *
  */
-public class Global extends GlobalSettings {
+public class TestHelper {
 	
-	@Override
-	public void onStart(Application app) {
-		InitialData.insert(app);
-	}
-	
-	static class InitialData {
+	public static class TestData {
 		
-		public static void insert(Application app) {
+		public static void inser() {
+			TestData.insert("test-data.yml");
+		}
+		
+		public static void insert(String ymlDataFile) {
 			if (Ebean.find(User.class).findRowCount() == 0) {
-
-				Map<String, List<Object>> all = (Map<String, List<Object>>) Yaml.load("initial-data.yml");
+				Map<String, List<Object>> all = (Map<String, List<Object>>) Yaml.load(ymlDataFile);
 				
 				// Insert users first
 				Ebean.save(all.get("users"));
@@ -43,7 +40,6 @@ public class Global extends GlobalSettings {
 				
 				// Insert tasks
 				Ebean.save(all.get("tasks"));
-				
 			}
 		}
 	}

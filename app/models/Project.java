@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.avaje.ebean.Ebean;
+
 import play.db.ebean.Model;
 
 /**
@@ -23,10 +25,12 @@ public class Project extends Model {
 	
     @Id 
     public Long id;
+    
     public String name;
+    
     public String folder;
     
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany
     public List<User> members = new ArrayList<User>();
 
     public Project(String name, String folder, User owner) {
@@ -35,9 +39,29 @@ public class Project extends Model {
         this.members.add(owner);
     }
 	
-    public static Model.Finder<Long,Project> find = 
-    		new Model.Finder<Long, Project>(Long.class, Project.class);
+    public static Model.Finder<Long,Project> find =	new Model.Finder<Long, Project>(Long.class, Project.class);
 
+    /**
+     * Retrieve project for user
+     */
+    public static List<Project> findInvolving(String user) {
+        return find.where()
+            .eq("members.email", user)
+            .findList();
+    }
+    
+    /**
+     * Delete all project in a folder
+     */
+    public static void deleteInFolder(String folder) {
+        Ebean.createSqlUpdate(
+            "delete from project where folder = :folder"
+        ).setParameter("folder", folder).execute();
+    }
+    
+    /**
+     * Create a new project.
+     */    
     public static Project create(String name, String folder, String owner) {
         Project project = new Project(name, folder, User.find.ref(owner));
         project.save();
@@ -45,19 +69,9 @@ public class Project extends Model {
         return project;
     }
     
-    public static List<Project> findInvolving(String user) {
-        return find.where()
-            .eq("members.email", user)
-            .findList();
-    }
-
-    public static boolean isMember(Long project, String user) {
-        return find.where()
-            .eq("members.email", user)
-            .eq("id", project)
-            .findRowCount() > 0;
-    }
-    
+    /**
+     * Rename a project
+     */
     public static String rename(Long projectId, String newName) {
         Project project = find.ref(projectId);
         project.name = newName;
@@ -65,12 +79,53 @@ public class Project extends Model {
         return newName;
     }    
     
+    /**
+     * Rename a folder
+     */
+    public static String renameFolder(String folder, String newName) {
+        Ebean.createSqlUpdate(
+            "update project set folder = :newName where folder = :folder"
+        ).setParameter("folder", folder).setParameter("newName", newName).execute();
+        return newName;
+    }
+    
+    /**
+     * Add a member to this project
+     */
+    public static void addMember(Long project, String user) {
+        Project p = Project.find.setId(project).fetch("members", "email").findUnique();
+        p.members.add(
+            User.find.ref(user)
+        );
+        p.saveManyToManyAssociations("members");
+    }
+    
+    /**
+     * Remove a member from this project
+     */
+    public static void removeMember(Long project, String user) {
+        Project p = Project.find.setId(project).fetch("members", "email").findUnique();
+        p.members.remove(
+            User.find.ref(user)
+        );
+        p.saveManyToManyAssociations("members");
+    }
+    
+    /**
+     * Check if a user is a member of this project
+     */
+    public static boolean isMember(Long project, String user) {
+        return find.where()
+            .eq("members.email", user)
+            .eq("id", project)
+            .findRowCount() > 0;
+    }
+    
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString() {
-		return "Project [id=" + id + ", name=" + name + "]";
-	}
-    
+    public String toString() {
+        return "Project(" + id + ") with " + (members == null ? "null" : members.size()) + " members";
+    }
 }

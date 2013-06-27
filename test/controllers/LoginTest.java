@@ -12,6 +12,7 @@ import org.junit.Test;
 import play.libs.Yaml;
 import play.mvc.*;
 import play.test.*;
+import util.TestHelper;
 import static org.junit.Assert.*;
 import static play.test.Helpers.*;
 
@@ -26,11 +27,7 @@ public class LoginTest extends WithApplication {
 	@Before
 	public void setUp() {
 		start(fakeApplication(inMemoryDatabase(), fakeGlobal()));
-		Map data = (Map) Yaml.load("test-data.yml");
-
-		Ebean.save((List) data.get("users"));
-		Ebean.save((List) data.get("projects"));
-		Ebean.save((List) data.get("tasks"));
+		TestHelper.TestData.insert("test-data.yml");
 	}
 	
 	@Test
@@ -60,7 +57,7 @@ public class LoginTest extends WithApplication {
 	@Test
 	public void authenticated() {
 		Result result = callAction(
-				controllers.routes.ref.Application.index(),
+				controllers.routes.ref.Projects.index(),
 				fakeRequest().withSession("email", "guillaume@sample.com")
 			);
 		// Http.Status.OK = 200
@@ -70,7 +67,7 @@ public class LoginTest extends WithApplication {
 	@Test
 	public void notAuthenticated() {
 	    Result result = callAction(
-	        controllers.routes.ref.Application.index(),
+	        controllers.routes.ref.Projects.index(),
 	        fakeRequest()
 	    );
 	    // Http.Status.SEE_OTHER = 303

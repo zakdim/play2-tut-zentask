@@ -15,6 +15,7 @@ import com.avaje.ebean.Ebean;
 import play.Logger;
 import play.libs.Yaml;
 import play.test.WithApplication;
+import util.TestHelper;
 import static org.junit.Assert.*;
 import static play.test.Helpers.*;
 
@@ -84,20 +85,8 @@ public class ModelsTest extends WithApplication {
     
     @Test
     public void fullTest() {
-    	Object obj = Yaml.load("test-data.yml");
-    	HashMap db = (HashMap) obj;
-    	ArrayList users = (ArrayList) db.get("users");
-    	ArrayList projects = (ArrayList) db.get("projects");
-    	ArrayList tasks = (ArrayList) db.get("tasks");
     	
-//    	Logger.info(users.toString());
-//    	Logger.info(projects.toString());
-//    	Logger.info(tasks.toString());
-
-    	Ebean.save(users);
-    	Ebean.save(projects);
-    	Ebean.save(tasks);
-//        Ebean.save((List) Yaml.load("test-data.yml"));
+    	TestHelper.TestData.insert("test-data.yml");
 
         // Count things
         assertEquals(4, User.find.findRowCount());

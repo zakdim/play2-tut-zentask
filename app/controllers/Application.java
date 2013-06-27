@@ -12,6 +12,8 @@ import views.html.*;
 
 public class Application extends Controller {
   
+	// -- Authentication
+	
 	public static class Login {
 		
 		public String email;
@@ -24,20 +26,18 @@ public class Application extends Controller {
 		    return null;
 		}		
 	}
-	
-	@Security.Authenticated(Secured.class)
-    public static Result index() {
-        return ok(index.render(
-        		Project.findInvolving(request().username()),
-        		Task.findTodoInvolving(request().username()),
-        		User.find.byId(request().username())
-        		));
-    }
   
+    /**
+     * Login page.
+     */
     public static Result login() {
-    	return ok(login.render(form(Login.class)));
+    	return ok(
+    		login.render(form(Login.class)));
     }
     
+    /**
+     * Handle login form submission.
+     */
     public static Result authenticate() {
     	Form<Login> loginForm = form(Login.class).bindFromRequest();
     	if (loginForm.hasErrors()) {
@@ -47,13 +47,45 @@ public class Application extends Controller {
     		session().clear();
     		session("email", loginForm.get().email);
     		// 303 SEE_OTHER 
-    		return redirect(routes.Application.index());
+    		return redirect(
+    			routes.Projects.index());
     	}
     }
     
+    /**
+     * Logout and clean the session.
+     */
     public static Result logout() {
     	session().clear();
     	flash("success", "You've been logged out");
-    	return redirect(routes.Application.login());
+    	return redirect(
+    		routes.Application.login());
+    }
+    
+    public static Result javascriptRoutes() {
+        response().setContentType("text/javascript");
+        return ok(
+            Routes.javascriptRouter("jsRoutes",
+            
+                // Routes for Projects
+                controllers.routes.javascript.Projects.add(), 
+                controllers.routes.javascript.Projects.delete(), 
+                controllers.routes.javascript.Projects.rename(),
+                controllers.routes.javascript.Projects.addGroup(), 
+                controllers.routes.javascript.Projects.deleteGroup(), 
+                controllers.routes.javascript.Projects.renameGroup(),
+                controllers.routes.javascript.Projects.addUser(), 
+                controllers.routes.javascript.Projects.removeUser(), 
+                
+                // Routes for Tasks
+                controllers.routes.javascript.Tasks.addFolder(), 
+                controllers.routes.javascript.Tasks.renameFolder(), 
+                controllers.routes.javascript.Tasks.deleteFolder(), 
+                controllers.routes.javascript.Tasks.index(),
+                controllers.routes.javascript.Tasks.add(), 
+                controllers.routes.javascript.Tasks.update(), 
+                controllers.routes.javascript.Tasks.delete()
+            )
+        );
     }
 }

@@ -4,6 +4,7 @@
 package controllers;
 
 import models.Project;
+import models.Task;
 import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -33,4 +34,11 @@ public class Secured extends Security.Authenticator {
 				Context.current().request().username()
 			);
 	}
+	
+    public static boolean isOwnerOf(Long task) {
+        return Task.isOwner(
+            task,
+            Context.current().request().username()
+        );
+    }
 }

@@ -17,6 +17,7 @@ import play.Logger;
 import play.libs.Yaml;
 import play.mvc.Result;
 import play.test.*;
+import util.TestHelper;
 import static org.junit.Assert.*;
 import static play.test.Helpers.*;
 import com.google.common.collect.ImmutableMap;
@@ -32,11 +33,7 @@ public class ProjectsTest extends WithApplication {
 	@Before
 	public void setUp() {
 		start(fakeApplication(inMemoryDatabase(), fakeGlobal()));
-		Map data = (Map) Yaml.load("test-data.yml");
-
-		Ebean.save((List) data.get("users"));
-		Ebean.save((List) data.get("projects"));
-		Ebean.save((List) data.get("tasks"));
+		TestHelper.TestData.insert("test-data.yml");
 	}
 
 	@Test
@@ -50,6 +47,7 @@ public class ProjectsTest extends WithApplication {
 		Project project = Project.find.where().eq("folder", "Some Group")
 				.findUnique();
 		assertNotNull(project);
+		Logger.info("new project: " + project.toString());
 		assertEquals("New project", project.name);
 		assertEquals(1, project.members.size());
 		assertEquals("guillaume@sample.com", project.members.get(0).email);
