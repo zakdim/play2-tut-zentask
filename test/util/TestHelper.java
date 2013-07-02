@@ -20,7 +20,7 @@ public class TestHelper {
 	
 	public static class TestData {
 		
-		public static void inser() {
+		public static void insert() {
 			TestData.insert("test-data.yml");
 		}
 		
